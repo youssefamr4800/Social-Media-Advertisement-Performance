@@ -1,0 +1,5 @@
+
+# ignore test and data directories
+test/
+data/
+Data Warehouse Project Description.pdf
