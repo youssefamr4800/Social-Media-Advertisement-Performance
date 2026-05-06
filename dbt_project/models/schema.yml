@@ -1,0 +1,40 @@
+version: 2
+
+models:
+  - name: dim_users
+    columns:
+      - name: user_id
+        tests:
+          - not_null
+          - unique
+
+  - name: dim_ads
+    columns:
+      - name: ad_id
+        tests:
+          - not_null
+          - unique
+
+  - name: dim_campaigns
+    columns:
+      - name: campaign_id
+        tests:
+          - not_null
+          - unique
+
+  - name: fact_ad_events
+    columns:
+      - name: event_id
+        tests:
+          - not_null
+          - unique
+      - name: ad_id
+        tests:
+          - relationships:
+              to: ref('dim_ads')
+              field: ad_id
+      - name: user_id
+        tests:
+          - relationships:
+              to: ref('dim_users')
+              field: user_id
