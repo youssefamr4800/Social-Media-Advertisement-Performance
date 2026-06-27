@@ -220,5 +220,7 @@ __marimo__/
 
 Data Warehouse Project Description.pdf
 
-/data
-/test
+/data/
+/test/
+/logs/
+/config/

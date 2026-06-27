@@ -1,6 +1,6 @@
 {{ config(materialized='view') }}
 
-SELECT
+SELECT DISTINCT
   ad_id,
   campaign_id,
   ad_platform,
@@ -8,4 +8,4 @@ SELECT
   target_gender,
   target_age_group,
   target_interests
-FROM raw.ads
+FROM {{ source('raw', 'ads') }}

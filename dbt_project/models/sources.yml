@@ -1,0 +1,46 @@
+version: 2
+
+sources:
+  - name: raw
+    database: marketing_dw
+    schema: raw
+
+    tables:
+      - name: ad_events
+        description: Raw advertisement interaction events
+
+        columns:
+          - name: event_id
+            tests:
+              - not_null
+
+          - name: ad_id
+            tests:
+              - not_null
+
+      - name: ads
+        description: Raw advertisements metadata
+
+        columns:
+          - name: ad_id
+            tests:
+              - unique
+              - not_null
+
+      - name: campaigns
+        description: Raw campaigns information
+
+        columns:
+          - name: campaign_id
+            tests:
+              - unique
+              - not_null
+
+      - name: users
+        description: Raw users data
+
+        columns:
+          - name: user_id
+            tests:
+              - unique
+              - not_null

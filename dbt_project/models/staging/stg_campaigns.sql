@@ -1,10 +1,10 @@
 {{ config(materialized='view') }}
 
-SELECT
+SELECT DISTINCT
   campaign_id,
   name,
   start_date,
   end_date,
   duration_days,
   total_budget
-FROM raw.campaigns
+FROM {{ source('raw', 'campaigns') }}

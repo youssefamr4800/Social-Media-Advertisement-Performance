@@ -1,6 +1,6 @@
 {{ config(materialized='view') }}
 
-SELECT
+SELECT DISTINCT
   event_id,
   ad_id,
   user_id,
@@ -8,4 +8,4 @@ SELECT
   day_of_week,
   time_of_day,
   event_type
-FROM raw.ad_events
+FROM {{ source('raw', 'ad_events') }}

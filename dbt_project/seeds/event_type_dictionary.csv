@@ -1,0 +1,6 @@
+event_type,description
+click,User clicked the advertisement
+view,User viewed the advertisement
+purchase,User purchased after advertisement
+like,User liked the advertisement
+share,User shared the advertisement
