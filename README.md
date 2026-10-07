@@ -44,6 +44,14 @@ An end-to-end data engineering project that ingests advertising data, models it 
 | `campaigns.csv` | Campaign details (dates, duration, budget) |
 | `ad_events.csv` | Ad interactions (event type, timestamp, user, ad) |
 
+## Ingestion (NiFi)
+
+The NiFi flow reads the CSV files from `data/`, converts them, routes each record by file name, and writes it to its own table in PostgreSQL:
+
+`GetFile → ConvertRecord → RouteOnAttribute → PutDatabaseRecord` (one processor each for `users`, `ads`, `campaigns`, `ad_events`)
+
+![NiFi flow](docs/images/nifi_flow.png)
+
 ## Data Model
 
 dbt builds three layers, each in its own schema:
@@ -59,6 +67,8 @@ Additional schemas:
 - `snapshots`: history tracking (SCD Type 2) for `users` and `campaigns`
 
 **Star schema:** `fact_ad_events` links to `dim_users`, `dim_ads`, and `dim_campaigns`.
+
+![Warehouse ERD](docs/images/erd.png)
 
 ## Data Quality
 
@@ -78,6 +88,14 @@ start_nifi_flow → dbt_seed → dbt_snapshot → dbt_run → dbt_test
 3. `dbt_snapshot`: captures changes in users and campaigns.
 4. `dbt_run`: builds staging, warehouse, and mart models.
 5. `dbt_test`: validates the results.
+
+![Airflow DAG](docs/images/airflow_dag.png)
+
+## Dashboard (Grafana)
+
+The Grafana dashboard reads from the `marts` schema and shows the most active countries, ad platform performance, events over time, user gender distribution, campaign performance, and total events by type.
+
+![Grafana dashboard](docs/images/grafana_dashboard.png)
 
 ## Getting Started
 
@@ -135,11 +153,12 @@ dbt docs generate && dbt docs serve --port 8082 --no-browser
 ├── data/                  # source CSV files
 ├── drivers/               # PostgreSQL JDBC driver for NiFi
 ├── config/                # airflow.cfg
+├── docs/images/           # screenshots used in this README
 ├── docker-compose.yml     # all services
 └── Dockerfile             # Airflow image with dbt installed
 ```
 
 ## Notes
 
-- The `event_type_dictionary` seed lists `view`, `purchase`, `like`, and `share`, while the marts count `impression`, `click`, and `conversion`. Align these with the real values in `ad_events.csv`.
-- The NiFi flow itself is configured in the NiFi UI and is not stored in this repo. Exporting it as a template or flow definition would make the project fully reproducible.
+- The real event types in the data are `impression`, `click`, `like`, `comment`, `purchase`, and `share` (see the Grafana dashboard). The `event_type_dictionary` seed lists `view` instead of `impression` and has no `comment`, and the marts count `conversion`, which does not appear in the data. Align the seed and marts with the real values.
+- The NiFi flow is configured in the NiFi UI and is not stored in this repo. Exporting it as a flow definition would make the project fully reproducible.
