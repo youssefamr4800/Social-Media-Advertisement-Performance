@@ -50,7 +50,7 @@ The NiFi flow reads the CSV files from `data/`, converts them, routes each recor
 
 `GetFile → ConvertRecord → RouteOnAttribute → PutDatabaseRecord` (one processor each for `users`, `ads`, `campaigns`, `ad_events`)
 
-![NiFi flow](docs/images/nifi_flow.png)
+![NiFi flow](images/nifi_flow.png)
 
 ## Data Model
 
@@ -68,7 +68,7 @@ Additional schemas:
 
 **Star schema:** `fact_ad_events` links to `dim_users`, `dim_ads`, and `dim_campaigns`.
 
-![Warehouse ERD](docs/images/erd.png)
+![Warehouse ERD](images/Star_Schema.png)
 
 ## Data Quality
 
@@ -89,13 +89,13 @@ start_nifi_flow → dbt_seed → dbt_snapshot → dbt_run → dbt_test
 4. `dbt_run`: builds staging, warehouse, and mart models.
 5. `dbt_test`: validates the results.
 
-![Airflow DAG](docs/images/airflow_dag.png)
+![Airflow DAG](images/airflow_dag.png)
 
 ## Dashboard (Grafana)
 
 The Grafana dashboard reads from the `marts` schema and shows the most active countries, ad platform performance, events over time, user gender distribution, campaign performance, and total events by type.
 
-![Grafana dashboard](docs/images/grafana_dashboard.png)
+![Grafana dashboard](images/grafana_dashboard.png)
 
 ## Getting Started
 
@@ -153,7 +153,7 @@ dbt docs generate && dbt docs serve --port 8082 --no-browser
 ├── data/                  # source CSV files
 ├── drivers/               # PostgreSQL JDBC driver for NiFi
 ├── config/                # airflow.cfg
-├── docs/images/           # screenshots used in this README
+├── images/           # screenshots used in this README
 ├── docker-compose.yml     # all services
 └── Dockerfile             # Airflow image with dbt installed
 ```
