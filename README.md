@@ -8,6 +8,10 @@ An end-to-end data engineering project that ingests advertising data, models it 
 
 ## Architecture
 
+![Dockerized Marketing Data Warehouse Pipeline](images/architecture.png)
+
+In short:
+
 ```
  data/*.csv ──► Apache NiFi ──► PostgreSQL (raw schema)
                                       │
